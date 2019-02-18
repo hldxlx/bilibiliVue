@@ -65,15 +65,15 @@
         },
         methods:{
             getNewsList(){//获取新闻列表
-                this.$http.get('api/getnewslist').then(result=>{
-                    if(result.body.status === 0){
-                        //如果没失败，应该把数据保存在data上
-                        this.newsList = result.body.message;
-                    }else{
-                        Toast("获取失败")
+                // this.$http.get('api/getnewslist').then(result=>{
+                //     if(result.body.status === 0){
+                //         //如果没失败，应该把数据保存在data上
+                //         this.newsList = result.body.message;
+                //     }else{
+                //         Toast("获取失败")
 
-                    }
-                })
+                //     }
+                // })
             }
         }
     }

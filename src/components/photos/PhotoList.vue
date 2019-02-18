@@ -32,21 +32,21 @@
      methods:{
         getAllCategory(){
             //获取所有的图片分类
-            this.$http.get('api/getimgcategory').then(result=>{
-                if(result.body.status === 0){
-                    //手动拼接出一个最完整的分类列表
-                    result.body.message.unshift({title:'全部',id:0});
-                    this.cates = result.body.message;
-                }
-            });
+            // this.$http.get('api/getimgcategory').then(result=>{
+            //     if(result.body.status === 0){
+            //         //手动拼接出一个最完整的分类列表
+            //         result.body.message.unshift({title:'全部',id:0});
+            //         this.cates = result.body.message;
+            //     }
+            // });
         },
         getPhotoListByCateId(cateId){
             //根据分类id获取图片列表
-            this.$http.get('api/getimages/'+cateId).then(result=>{
-                if(result.body.status===0){
-                    this.list = result.body.message;
-                }
-            })
+            // this.$http.get('api/getimages/'+cateId).then(result=>{
+            //     if(result.body.status===0){
+            //         this.list = result.body.message;
+            //     }
+            // })
         }
      } 
    }

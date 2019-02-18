@@ -1,6 +1,10 @@
 <template>
     <div class="app-container">
-        <mt-header fixed title="bilibili vue项目"></mt-header>
+        <mt-header fixed title="bilibili vue项目">
+            <span slot="left" @click="goBack" v-show="flag">
+                <mt-button icon="back">返回</mt-button>
+            </span>
+        </mt-header>
          <transition mode="out-in">
              <router-view></router-view>
          </transition>
@@ -17,7 +21,7 @@
          			</router-link>
          			<router-link class="mui-tab-item" to="/shopcar">
          				<span class="mui-icon mui-icon-extra mui-icon-extra-cart">
-                            <span id="badge" class="mui-badge">0</span></span>
+                            <span id="badge" class="mui-badge">{{$store.getters.getAllCount}}</span></span>
          				<span class="mui-tab-label">购物车</span>
          			</router-link>
          			<router-link class="mui-tab-item" to="/search">
@@ -29,7 +33,31 @@
 </template>
 
 <script>
-
+    export default{
+        data(){
+            return {
+                flag:flase
+            }
+        },
+        created(){
+            this.flag = this.$route.path ==='/home'?false:true;
+        },
+        methods:{
+            goBack(){
+                //点击后退
+                this.$router.go(-1); 
+            }
+        },
+        watch:{
+            '$route.path':function(newVal){
+                if(newVal === '/home'){
+                    this.flag = false;
+                }else{
+                    this.flag = true;
+                }
+            }
+        }
+    }
 </script>
 
 <style lang="scss" scoped>

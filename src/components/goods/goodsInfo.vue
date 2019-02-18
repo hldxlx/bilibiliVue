@@ -8,7 +8,12 @@
       <div class="ball" v-show="ballFlag" ref="ball"></div>
     </transtion>
 
-    <numbox @getcount="getSelectedCount"></numbox>
+    <numbox @getcount="getSelectedCount" :max="mm"></numbox>
+
+
+    
+    <p>id:22</p>
+    <p>价格100</p>
 
     <button @click="addToShopCar">加入购物车</button>
 
@@ -20,21 +25,68 @@
 
     <!--分析：子组件何时把数据传递给父组件-->
 
+
+    <p>vuex demo</p>
+    <demo></demo>
+
+
+    <div class="goods-list">
+      <div class="mui-card-header mui-card-media">
+        <div class="mui-media-body">
+            <mt-switch 
+            v-model="$store.getters.getGoodsSelected[2]"
+            @change="selectedChanged(2,$store.getters.getGoodsSelected[2])"
+            ></mt-switch>
+            <img class="kury" src="../../images/ball.jpg">
+            <div class="info">
+                <span>小米</span>
+                <shopcarNumbox></shopcarNumbox>
+                <span class="price">2199</span>
+                <span>删除</span>
+                <p>已勾选{{$store.getters.getGoodsCountAndAmount.count}}件</p>
+                <p>总价{{$store.getters.getGoodsCountAndAmount.amount}}元</p>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+
+    <p>{{$store.getters.getGoodsSelected}}</p>
+
     </div>
 </template>
 
 <script>
     import numbox from '../subcomponents/numbox.vue';
+    import demo from '../subcomponents/demo.vue';
+    import shopcarNumbox from '../subcomponents/shopcar_numbox.vue';
+
     export default {
        data(){
           return{
             ballFlag:false,//控制小球隐藏显示
-            selectedCount:1
+            selectedCount:1,
+            mm:60//先写死一个mm，其实它应该通过接口的数据获得
           }
         },
         methods:{
           addToShopCar(){
             this.ballFlag = !this.ballFlag;
+            //{id:商品的id,count:数量，price:单价，selected:false}
+            //拼接出一个，要保存到store中car数组的商品信息对象
+          
+            var goodsinfo = {
+              id:2,
+              count:10,
+              price:299,
+              selected:true
+            };
+
+            //调用store中的mutations来将商品加入购物车
+            this.$store.commit("addToCar",goodsinfo);
+
+
+
           },
           beforeEnter(el){
             el.style.transform="translate(0px,0px)";
@@ -71,19 +123,26 @@
             // done();//done代表afterEnter这个函数的运用
           },
           afterEnter(el){
-            
+
             this.ballFlag = !this.ballFlag;
           },
           getSelectedCount(count){
             //当子组件把选中的数量传递给父组件时,把选中的值保存到data上
             this.selectedCount = count;
             console.log("父组件拿到的数量值为"+this.selectedCount);
+          },
+          selectedChanged(id,val){
+            //每当点击开关，把最新的开关状态，同步到store中
+            console.log(id+'----'+val);
+            this.$store.commit('updateGoodsSelected',{id,selected:val})
           }
 
 
         },
         components:{
-          numbox
+          numbox,
+          demo,
+          shopcarNumbox
         }
     }
 </script>
@@ -97,5 +156,9 @@
     z-index:99;
     transform:translate(148px,230px);
 
+  }
+  .kury{
+    width:50px;
+    height:50px;
   }
 </style>
